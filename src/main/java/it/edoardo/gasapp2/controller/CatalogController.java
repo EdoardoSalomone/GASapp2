@@ -3,6 +3,7 @@ package it.edoardo.gasapp2.controller;
 import it.edoardo.gasapp2.model.Catalog;
 import it.edoardo.gasapp2.model.User;
 import it.edoardo.gasapp2.repository.CatalogRepository;
+import it.edoardo.gasapp2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,10 +16,12 @@ import java.util.List;
 public class CatalogController {
 
     private final CatalogRepository catalogRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CatalogController(CatalogRepository catalogRepository) {
+    public CatalogController(CatalogRepository catalogRepository, UserRepository userRepository) {
         this.catalogRepository = catalogRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -29,8 +32,7 @@ public class CatalogController {
     @PostMapping
     public Catalog createCatalog(@RequestBody Catalog catalog) {
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User venditore = new User(); //TODO  Carica il venditore corrente dal DB
-        venditore.setUsername(username);
+        User venditore = userRepository.findByUsername(username).orElse(null); //TODO  Carica il venditore corrente dal DB
         catalog.setUser(venditore);
         return catalogRepository.save(catalog);
     }
