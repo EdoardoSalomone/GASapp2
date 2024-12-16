@@ -3,6 +3,7 @@ package it.edoardo.gasapp2.controller;
 import it.edoardo.gasapp2.model.Catalog;
 import it.edoardo.gasapp2.model.User;
 import it.edoardo.gasapp2.repository.CatalogRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -10,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/venditori/cataloghi")
+@RequestMapping("/admin/cataloghi")
 public class CatalogController {
 
     private final CatalogRepository catalogRepository;
 
-
+    @Autowired
     public CatalogController(CatalogRepository catalogRepository) {
         this.catalogRepository = catalogRepository;
     }

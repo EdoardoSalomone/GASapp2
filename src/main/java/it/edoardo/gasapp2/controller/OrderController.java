@@ -6,6 +6,7 @@ import it.edoardo.gasapp2.model.User;
 import it.edoardo.gasapp2.repository.OrderRepository;
 import it.edoardo.gasapp2.repository.ProductRepository;
 import it.edoardo.gasapp2.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class OrderController {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
+    @Autowired
     public OrderController(OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
