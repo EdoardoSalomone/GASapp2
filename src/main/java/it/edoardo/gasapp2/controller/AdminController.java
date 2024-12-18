@@ -8,10 +8,7 @@ import it.edoardo.gasapp2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -30,8 +27,8 @@ public class AdminController {
         this.productRepository = productRepository;
     }
 
-    @PostMapping(value = "/catalog/create/{name}")
-    public ResponseEntity<String> createCatalog(@RequestParam("name") String name){
+    @GetMapping(value = "/catalog/create/{name}")
+    public ResponseEntity<Boolean> createCatalog(@PathVariable("name") String name){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User authUser = userRepository.findByUsername(username).orElse(null);
         if(!Objects.isNull(authUser)){
@@ -39,8 +36,8 @@ public class AdminController {
             catalog.setName(name);
             catalog.setUser(authUser);
             catalogRepository.save(catalog);
-            return ResponseEntity.ok("Catalogo aggiunto con successo");
+            return ResponseEntity.ok(true);
         }
-        return ResponseEntity.badRequest().body("Errore nella creazione del catalogo");
+        return ResponseEntity.badRequest().body(false);
     }
 }
