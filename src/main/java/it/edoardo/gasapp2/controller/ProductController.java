@@ -4,6 +4,7 @@ import it.edoardo.gasapp2.model.Catalog;
 import it.edoardo.gasapp2.model.Product;
 import it.edoardo.gasapp2.repository.CatalogRepository;
 import it.edoardo.gasapp2.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/venditori/prodotti")
+@RequestMapping("/admin/prodotti")
 public class ProductController {
 
     private final ProductRepository productRepository;
     private final CatalogRepository catalogRepository;
 
+    @Autowired
     public ProductController(ProductRepository productRepository, CatalogRepository catalogRepository) {
         this.productRepository = productRepository;
         this.catalogRepository = catalogRepository;
