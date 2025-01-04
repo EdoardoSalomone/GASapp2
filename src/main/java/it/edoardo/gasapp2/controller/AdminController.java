@@ -1,9 +1,9 @@
 package it.edoardo.gasapp2.controller;
 
+import it.edoardo.gasapp2.dto.catalog.CatalogResponseDTO;
 import it.edoardo.gasapp2.model.Catalog;
 import it.edoardo.gasapp2.model.User;
 import it.edoardo.gasapp2.repository.CatalogRepository;
-import it.edoardo.gasapp2.repository.ProductRepository;
 import it.edoardo.gasapp2.repository.UserRepository;
 import it.edoardo.gasapp2.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,7 +25,7 @@ public class AdminController {
     private final CatalogService catalogService;
 
     @Autowired
-    public AdminController(UserRepository userRepository, CatalogRepository catalogRepository, ProductRepository productRepository, CatalogService catalogService) {
+    public AdminController(UserRepository userRepository, CatalogRepository catalogRepository, CatalogService catalogService) {
         this.userRepository = userRepository;
         this.catalogRepository = catalogRepository;
         this.catalogService = catalogService;
@@ -44,5 +46,15 @@ public class AdminController {
             catalog.setUser(authUser);
             catalogRepository.save(catalog);
             return ResponseEntity.status(200).body(Map.of("message","catalogo creato con successo"));
+    }
+
+    @GetMapping(value = "/catalog/get/userCatalogs")
+    public ResponseEntity<List<CatalogResponseDTO>> getUserCatalogs(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User authUser = userRepository.findByUsername(username).orElse(null);
+        if (!Objects.isNull(authUser)) {
+            return ResponseEntity.ok(catalogService.getUserCatalog(authUser));
+        }
+        return ResponseEntity.status(403).body(Collections.emptyList());
     }
 }
