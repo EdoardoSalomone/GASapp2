@@ -1,6 +1,6 @@
 package it.edoardo.gasapp2.controller;
 
-import it.edoardo.gasapp2.dto.user.AuthResponse;
+import it.edoardo.gasapp2.dto.response.AuthResponse;
 import it.edoardo.gasapp2.dto.user.RegistrationResponseDTO;
 import it.edoardo.gasapp2.model.User;
 import it.edoardo.gasapp2.repository.UserRepository;
